@@ -17,7 +17,7 @@ namespace ECommerceC43.Api.Controllers
         {
             _logger = logger;
         }
-
+        //BasUurl/WeatherForecastController/GetWeatherForecast
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
