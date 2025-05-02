@@ -9,14 +9,17 @@ namespace ECommerceC43.Api
 
             // Add services to the container.
 
+            #region DI
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(); 
+            #endregion
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+            #region MiddleWare
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -28,7 +31,8 @@ namespace ECommerceC43.Api
             app.UseAuthorization();
 
 
-            app.MapControllers();
+            app.MapControllers(); 
+            #endregion
 
             app.Run();
         }

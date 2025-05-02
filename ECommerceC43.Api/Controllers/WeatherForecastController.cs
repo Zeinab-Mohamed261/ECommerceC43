@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ECommerceC43.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -17,7 +17,7 @@ namespace ECommerceC43.Api.Controllers
         {
             _logger = logger;
         }
-
+        //BasUurl/api/WeatherForecastController/GetWeatherForecast
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
