@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using Persistence.Data;
+
 namespace ECommerceC43.Api
 {
     public class Program
@@ -8,7 +11,11 @@ namespace ECommerceC43.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddDbContext<StoreDbContext>(options =>
+            {
+                var connnectionString = builder.Configuration.GetConnectionString("DefaultConnection");//access appsetting
+                options.UseSqlServer(connnectionString);
+            });
             #region DI
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
