@@ -1,5 +1,7 @@
 
+using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 using Persistence.Data;
 
 namespace ECommerceC43.Api
@@ -21,9 +23,15 @@ namespace ECommerceC43.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(); 
+            builder.Services.AddScoped<IDataSeeding, DataSeeding>(); // DI for seeding data
             #endregion
 
             var app = builder.Build();
+
+            using var scope = app.Services.CreateScope();
+            var objectOfDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
+            objectOfDataSeeding.SeedData(); // call seeding data method
+
 
             // Configure the HTTP request pipeline.
             #region MiddleWare
