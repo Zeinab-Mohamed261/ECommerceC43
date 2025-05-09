@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
 using Persistence.Reposotories;
+using Services;
 using Services.MappingProfiles;
+using ServicesAbstrations;
 
 namespace ECommerceC43.Api
 {
@@ -28,6 +30,7 @@ namespace ECommerceC43.Api
             builder.Services.AddScoped<IDataSeeding, DataSeeding>(); // DI for seeding data
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); // DI for unit of work
             builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly); // DI for automapper
+            builder.Services.AddScoped<IServiceManager, ServiceManager>(); // DI for service manager
             #endregion
 
             var app = builder.Build();
