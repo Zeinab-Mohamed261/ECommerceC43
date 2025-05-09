@@ -3,4 +3,9 @@
 GET {{ECommerceC43.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
-###
+###Get Products
+GET {{ECommerceC43.Api_HostAddress}}/api/Products
+
+###GET By Id
+@id = 10
+GET {{ECommerceC43.Api_HostAddress}}/api/Products/{{id}}
