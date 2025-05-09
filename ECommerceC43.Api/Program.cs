@@ -3,6 +3,7 @@ using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
+using Persistence.Reposotories;
 
 namespace ECommerceC43.Api
 {
@@ -24,6 +25,8 @@ namespace ECommerceC43.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(); 
             builder.Services.AddScoped<IDataSeeding, DataSeeding>(); // DI for seeding data
+            builder
+                .Services.AddScoped<IUnitOfWork, UnitOfWork>(); // DI for unit of work
             #endregion
 
             var app = builder.Build();
