@@ -11,5 +11,6 @@ namespace Shared.DataTransferObject
         public int? BrandId { get; set; }
         public int? TypeId { get; set; }
         public ProductSortingOptions Options { get; set; }
+        public string? Search { get; set; }
     }
 }
