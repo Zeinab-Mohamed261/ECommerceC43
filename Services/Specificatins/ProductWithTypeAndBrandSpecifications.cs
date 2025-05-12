@@ -30,6 +30,7 @@ namespace Services.Specificatins
             AddInclude(p => p.ProductBrand);
             AddInclude(p => p.ProductType);
             ApplySorting(parameters);
+            ApplyPagination(parameters.PageSize, parameters.pageIndex);
         }
 
         private static Expression<Func<Product, bool>> ApplyCriteria(ProductQueryParameters parameters)

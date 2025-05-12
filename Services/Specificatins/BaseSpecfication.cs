@@ -33,6 +33,20 @@ namespace Services.Specificatins
             private set;
         }
 
+        public int Skip { get; private set; }
+
+        public int Take { get; private set; }
+
+        public bool IsPaginated { get; private set; }
+
+        protected void ApplyPagination(int pageSize , int pageIndex)
+        //                                  5                2
+        {
+            IsPaginated = true;
+            Take = pageSize; //take(5).skip(5)
+            Skip = (pageIndex - 1) * pageSize;//1*5 = 5
+        }
+
         //public Expression<Func<TEntity, object>> OrderByDescending { get; private set; }
 
         protected void AddInclude(Expression<Func<TEntity, object>> include)

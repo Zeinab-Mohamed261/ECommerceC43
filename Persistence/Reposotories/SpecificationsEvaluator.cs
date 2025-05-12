@@ -35,8 +35,12 @@ namespace Persistence.Reposotories
                 query = query.OrderBy(specefication.OrderBy); //_dbContext.Set<TEntity>().where(p => p.id ==1).Include(P => P.ProductBrand).include(P => P.ProductType).OrderBy(p => p.id);
             else if (specefication.orderByDescending != null)
                 query = query.OrderByDescending(specefication.orderByDescending); //_dbContext.Set<TEntity>().where(p => p.id ==1).Include(P => P.ProductBrand).include(P => P.ProductType).OrderByDescending(p => p.id);
-            
+
+            if (specefication.IsPaginated)
+                query = query.Skip(specefication.Skip).Take(specefication.Take);
+
             return query;
+
         }
     }
 }
