@@ -27,11 +27,12 @@ namespace Persistence.Reposotories
             return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
+       
         public async Task<TEntity> GetByIdAsync(TKey id)
-
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }
+
 
         public void Remove(TEntity entity)
         {
@@ -42,5 +43,14 @@ namespace Persistence.Reposotories
         {
             _dbContext.Set<TEntity>().Update(entity); //modified
         }
+        public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecefications<TEntity, TKey> specefication)
+        {
+           return await SpecificationsEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specefication).ToListAsync();
+        }
+        public async Task<TEntity> GetByIdAsync(ISpecefications<TEntity, TKey> specefication)
+        {
+           return await SpecificationsEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specefication).FirstOrDefaultAsync();
+        }
+
     }
 }
