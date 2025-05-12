@@ -31,6 +31,11 @@ namespace Persistence.Reposotories
                 (currentQuery , include) => currentQuery.Include(include));
             //_dbContext.Set<TEntity>().where(p => p.id ==1).Include(P => P.ProductBrand).include(P => P.ProductType);
 
+            if(specefication.OrderBy != null)
+                query = query.OrderBy(specefication.OrderBy); //_dbContext.Set<TEntity>().where(p => p.id ==1).Include(P => P.ProductBrand).include(P => P.ProductType).OrderBy(p => p.id);
+            else if (specefication.orderByDescending != null)
+                query = query.OrderByDescending(specefication.orderByDescending); //_dbContext.Set<TEntity>().where(p => p.id ==1).Include(P => P.ProductBrand).include(P => P.ProductType).OrderByDescending(p => p.id);
+            
             return query;
         }
     }
