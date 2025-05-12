@@ -17,7 +17,7 @@ namespace Presentation.Contollers
         // Get All Products
         [HttpGet]
         //GET  BaseUrl/api/Products
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts([FromQuery]ProductQueryParameters queryParameters)
+        public async Task<ActionResult<PaginationResponce<ProductDto>>> GetAllProducts([FromQuery]ProductQueryParameters queryParameters)
         {
             var Products = await _serviceManager.ProductService.GetAllProductsAsync(queryParameters);
             return Ok(Products);
