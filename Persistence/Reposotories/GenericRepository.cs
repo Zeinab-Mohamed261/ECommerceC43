@@ -19,10 +19,16 @@ namespace Persistence.Reposotories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
+            //Without Specification[GetAll , GetById]  => miss (Open Closed Principle)
+            //if(_dbContext.Set<TEntity>() is Product)
+            //{
+            //     _dbContext.Set<Product>().Include(t => t.ProductBrand).ToList();
+            //}
             return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
         public async Task<TEntity> GetByIdAsync(TKey id)
+
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }
