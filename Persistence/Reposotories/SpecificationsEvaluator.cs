@@ -18,7 +18,8 @@ namespace Persistence.Reposotories
         {
             var query = inputQuery; //_dbContext.Set<TEntity>()
             if (specefication.Criteria != null)
-                query = query.Where(specefication.Criteria); //_dbContext.Set<TEntity>().where(p => p.id ==1)
+                query = query.Where(specefication.Criteria); //_dbContext.Set<TEntity>().where(p => p.brandId ==2 && p=> p.typeId == 3)
+
             //foreach (var include in specefication.IncludeExpression)
             //{
             //    query = query.Include(include); // _dbContext.Set<TEntity>().Include(t => t.ProductBrand)

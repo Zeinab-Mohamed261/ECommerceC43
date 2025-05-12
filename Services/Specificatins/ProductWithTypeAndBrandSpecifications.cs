@@ -19,8 +19,11 @@ namespace Services.Specificatins
         }
 
         //use this ctor to create query to get all products
-        public ProductWithTypeAndBrandSpecifications()
-            :base(null) // no filter
+        public ProductWithTypeAndBrandSpecifications(int? brandId , int? typeId)
+            :base(Product =>
+            (!brandId.HasValue || Product.BrandId == brandId.Value)&&
+            (!typeId.HasValue  || Product.TypeId  == typeId.Value)
+            ) 
         {
             //Add Includes
             AddInclude(p => p.ProductBrand);
