@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using Domain.Models.ProductModule;
 using Shared.DataTransferObject;
 using System;
 using System.Collections.Generic;
