@@ -10,7 +10,7 @@ namespace Shared.DataTransferObject
     {
         private const int DefaultPageSize = 5;
         private const int MaxPageSize = 10;
-        private int pageSize;
+        private int pageSize = DefaultPageSize;
 
         public int? BrandId { get; set; }
         public int? TypeId { get; set; }

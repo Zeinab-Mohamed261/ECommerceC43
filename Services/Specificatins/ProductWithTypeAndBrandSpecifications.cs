@@ -23,8 +23,7 @@ namespace Services.Specificatins
 
         //use this ctor to create query to get all products
         public ProductWithTypeAndBrandSpecifications(ProductQueryParameters parameters)
-            : base(ApplyCriteria(parameters)  //Search
-            )
+            : base(ApplyCriteria(parameters))  //Search
         {
             //Add Includes
             AddInclude(p => p.ProductBrand);

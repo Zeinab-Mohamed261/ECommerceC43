@@ -1,5 +1,6 @@
 
 using Domain.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
@@ -7,6 +8,7 @@ using Persistence.Reposotories;
 using Services;
 using Services.MappingProfiles;
 using ServicesAbstrations;
+using Shared.ErrorModels;
 
 namespace ECommerceC43.Api
 {
@@ -31,7 +33,13 @@ namespace ECommerceC43.Api
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); // DI for unit of work
             builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly); // DI for automapper
             builder.Services.AddScoped<IServiceManager, ServiceManager>(); // DI for service manager
+            builder.Services.Configure<ApiBehaviorOptions>((options) =>
+            {
+                options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationErrorResponse;
+            });
             #endregion
+
+
 
             var app = builder.Build();
 
