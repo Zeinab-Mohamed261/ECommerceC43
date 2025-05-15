@@ -19,24 +19,16 @@ namespace ECommerceC43.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<StoreDbContext>(options =>
-            {
-                var connnectionString = builder.Configuration.GetConnectionString("DefaultConnection");//access appsetting
-                options.UseSqlServer(connnectionString);
-            });
+            
             #region DI
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(); 
-            builder.Services.AddScoped<IDataSeeding, DataSeeding>(); // DI for seeding data
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); // DI for unit of work
-            builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly); // DI for automapper
-            builder.Services.AddScoped<IServiceManager, ServiceManager>(); // DI for service manager
-            builder.Services.Configure<ApiBehaviorOptions>((options) =>
-            {
-                options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationErrorResponse;
-            });
+            builder.Services.AddSwaggerServices(); // DI for swagger
+
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddAplicationServices(); // DI for application services
+
+            builder.Services.AddWebApplicationServices(); // DI for web application services
             #endregion
 
 
