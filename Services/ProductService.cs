@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Contracts;
+using Domain.Exceptions;
 using Domain.Models;
 using Services.Specificatins;
 using ServicesAbstrations;
@@ -46,6 +47,11 @@ namespace Services
         {
             var specifications = new ProductWithTypeAndBrandSpecifications(id);
             var Product = await _unitOfWork.GetRepository<Product , int>().GetByIdAsync(specifications);
+            if (Product is null)
+            {
+                throw new ProductNotFoundException(id);
+            }
+
             return _mapper.Map<Product, ProductDto>(Product);
         }
     }

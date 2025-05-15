@@ -1,4 +1,5 @@
-﻿using Shared.ErrorModels;
+﻿using Domain.Exceptions;
+using Shared.ErrorModels;
 using System.Net;
 using System.Text.Json;
 
@@ -24,17 +25,26 @@ namespace ECommerceC43.Api
             {
                 _logger.LogError(ex , "Error Happend");
 
+                httpContext.Response.StatusCode = ex switch
+                {
+                    NotFoundException => StatusCodes.Status404NotFound,
+                    _ => StatusCodes.Status500InternalServerError,//default
+                };
+
                 //set status code for response
                 //httpContext.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                //httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
                 //set content typr for response
                 httpContext.Response.ContentType = "application/json";
+
                 //response object
                 var Response = new ErrorToReturn
                 {
-                    StatusCode = StatusCodes.Status500InternalServerError,
+                    StatusCode = httpContext.Response.StatusCode,
                     ErrorMessage = ex.Message
                 };
+
                 //return object as json
                    // var ResponseToReturn = JsonSerializer.Serialize(Response);
                    //await httpContext.Response.WriteAsync(ResponseToReturn);
