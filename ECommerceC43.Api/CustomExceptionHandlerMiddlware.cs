@@ -20,34 +20,54 @@ namespace ECommerceC43.Api
             try
             {
                 await _next.Invoke(httpContext);
+                await HandleNotFoundEndPointAsync(httpContext);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex , "Error Happend");
+                await HandleExceptionAsync(httpContext, ex);
+            }
+        }
 
-                httpContext.Response.StatusCode = ex switch
+        private async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
+        {
+            _logger.LogError(ex, "Error Happend");
+
+            httpContext.Response.StatusCode = ex switch
+            {
+                NotFoundException => StatusCodes.Status404NotFound,
+                _ => StatusCodes.Status500InternalServerError,//default
+            };
+
+            //set status code for response
+            //httpContext.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+            //httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+            //set content typr for response
+            httpContext.Response.ContentType = "application/json";
+
+            //response object
+            var Response = new ErrorToReturn
+            {
+
+                StatusCode = httpContext.Response.StatusCode,
+                ErrorMessage = ex.Message
+            };
+
+            //return object as json
+            // var ResponseToReturn = JsonSerializer.Serialize(Response);
+            //await httpContext.Response.WriteAsync(ResponseToReturn);
+            await httpContext.Response.WriteAsJsonAsync(Response);
+        }
+
+        private static async Task HandleNotFoundEndPointAsync(HttpContext httpContext)
+        {
+            if (httpContext.Response.StatusCode == StatusCodes.Status404NotFound)
+            {
+                var Response = new ErrorToReturn()
                 {
-                    NotFoundException => StatusCodes.Status404NotFound,
-                    _ => StatusCodes.Status500InternalServerError,//default
+                    StatusCode = StatusCodes.Status404NotFound,
+                    ErrorMessage = $"End Point : {httpContext.Request.Path} is Not Found"
                 };
-
-                //set status code for response
-                //httpContext.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                //httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-
-                //set content typr for response
-                httpContext.Response.ContentType = "application/json";
-
-                //response object
-                var Response = new ErrorToReturn
-                {
-                    StatusCode = httpContext.Response.StatusCode,
-                    ErrorMessage = ex.Message
-                };
-
-                //return object as json
-                   // var ResponseToReturn = JsonSerializer.Serialize(Response);
-                   //await httpContext.Response.WriteAsync(ResponseToReturn);
                 await httpContext.Response.WriteAsJsonAsync(Response);
             }
         }
