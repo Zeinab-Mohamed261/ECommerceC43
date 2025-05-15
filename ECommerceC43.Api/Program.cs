@@ -42,6 +42,18 @@ namespace ECommerceC43.Api
 
             // Configure the HTTP request pipeline.
             #region MiddleWare
+
+            ////Custom Middleware
+            //app.Use(async (RequestContext, NextMiddleware) =>
+            //{
+            //    Console.WriteLine("Request Under Processing");
+            //    await NextMiddleware.Invoke();
+            //    Console.WriteLine("Waiting Response");
+            //    Console.WriteLine(RequestContext.Response.Body);
+            //});
+            // use CustomExceptionHandlerMiddlware we Do to handle exception
+            app.UseMiddleware<CustomExceptionHandlerMiddlware>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
