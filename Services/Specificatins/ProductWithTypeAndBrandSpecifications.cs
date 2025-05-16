@@ -1,6 +1,6 @@
 ﻿using Domain.Models.ProductModule;
 using Shared;
-using Shared.DataTransferObject;
+using Shared.DataTransferObject.ProductModuleDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
