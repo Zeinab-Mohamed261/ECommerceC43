@@ -1,6 +1,6 @@
-﻿using Domain.Models;
+﻿using Domain.Models.ProductModule;
 using Shared;
-using Shared.DataTransferObject;
+using Shared.DataTransferObject.ProductModuleDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +23,7 @@ namespace Services.Specificatins
 
         //use this ctor to create query to get all products
         public ProductWithTypeAndBrandSpecifications(ProductQueryParameters parameters)
-            : base(ApplyCriteria(parameters)  //Search
-            )
+            : base(ApplyCriteria(parameters))  //Search
         {
             //Add Includes
             AddInclude(p => p.ProductBrand);

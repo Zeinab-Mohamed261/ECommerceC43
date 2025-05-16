@@ -1,5 +1,6 @@
 
 using Domain.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
@@ -7,6 +8,7 @@ using Persistence.Reposotories;
 using Services;
 using Services.MappingProfiles;
 using ServicesAbstrations;
+using Shared.ErrorModels;
 
 namespace ECommerceC43.Api
 {
@@ -17,21 +19,19 @@ namespace ECommerceC43.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<StoreDbContext>(options =>
-            {
-                var connnectionString = builder.Configuration.GetConnectionString("DefaultConnection");//access appsetting
-                options.UseSqlServer(connnectionString);
-            });
+            
             #region DI
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(); 
-            builder.Services.AddScoped<IDataSeeding, DataSeeding>(); // DI for seeding data
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); // DI for unit of work
-            builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly); // DI for automapper
-            builder.Services.AddScoped<IServiceManager, ServiceManager>(); // DI for service manager
+            builder.Services.AddSwaggerServices(); // DI for swagger
+
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddAplicationServices(); // DI for application services
+
+            builder.Services.AddWebApplicationServices(); // DI for web application services
             #endregion
+
+
 
             var app = builder.Build();
 
@@ -42,6 +42,18 @@ namespace ECommerceC43.Api
 
             // Configure the HTTP request pipeline.
             #region MiddleWare
+
+            ////Custom Middleware
+            //app.Use(async (RequestContext, NextMiddleware) =>
+            //{
+            //    Console.WriteLine("Request Under Processing");
+            //    await NextMiddleware.Invoke();
+            //    Console.WriteLine("Waiting Response");
+            //    Console.WriteLine(RequestContext.Response.Body);
+            //});
+            // use CustomExceptionHandlerMiddlware we Do to handle exception
+            app.UseMiddleware<CustomExceptionHandlerMiddlware>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
