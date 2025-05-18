@@ -13,6 +13,7 @@ using Persistence.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
+using Persistence.Identity;
 
 namespace Persistence
 {
@@ -31,6 +32,11 @@ namespace Persistence
             Services.AddSingleton<IConnectionMultiplexer>((_)=>
             {
                 return ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisConnection"));
+            });
+            Services.AddDbContext<StoreIdentityDbContext>(options =>
+            {
+                var connsctionString = Configuration.GetConnectionString("IdentityConnection");
+                options.UseSqlServer(connsctionString);
             });
 
             return Services;
