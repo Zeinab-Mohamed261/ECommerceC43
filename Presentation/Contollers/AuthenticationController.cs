@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServicesAbstrations;
 using Shared.DataTransferObject.IdentityDtos;
 using System;
@@ -15,6 +16,7 @@ namespace Presentation.Contollers
     {
 
         //Login
+        //[Authorize(Roles ="Admin")]
         [HttpPost("Login")] //POST BasuUrl/api/Authentication/Login
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {

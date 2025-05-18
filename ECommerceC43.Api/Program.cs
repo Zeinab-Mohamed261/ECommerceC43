@@ -29,6 +29,7 @@ namespace ECommerceC43.Api
             builder.Services.AddAplicationServices(); // DI for application services
 
             builder.Services.AddWebApplicationServices(); // DI for web application services
+            builder.Services.AddJwtService(builder.Configuration);
             #endregion
 
 
@@ -61,7 +62,9 @@ namespace ECommerceC43.Api
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
