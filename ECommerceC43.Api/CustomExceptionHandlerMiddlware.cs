@@ -31,17 +31,15 @@ namespace ECommerceC43.Api
 
         private static async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
         {
-            var Response = new ErrorToReturn
+            var badRequestResponse = new ErrorToReturn()
             {
-
-                StatusCode = httpContext.Response.StatusCode,
-                ErrorMessage = ex.Message,
+                ErrorMessage = ex.Message
             };
             httpContext.Response.StatusCode = ex switch
             {
                 NotFoundException => StatusCodes.Status404NotFound,
                 UnAuthorizedException => StatusCodes.Status401Unauthorized,
-                BadRequestException badRequestException =>  GetBadRequestException(badRequestException , Response),
+                BadRequestException badRequestException =>  GetBadRequestException(badRequestException , badRequestResponse),
                 _ => StatusCodes.Status500InternalServerError,//default
             };
 
@@ -50,10 +48,15 @@ namespace ECommerceC43.Api
             //httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
             //set content typr for response
-            httpContext.Response.ContentType = "application/json";
+            //httpContext.Response.ContentType = "application/json";
 
             //response object
-            
+            var Response = new ErrorToReturn
+            {
+
+                StatusCode = httpContext.Response.StatusCode,
+                ErrorMessage = ex.Message,
+            };
 
             //return object as json
             // var ResponseToReturn = JsonSerializer.Serialize(Response);
@@ -63,6 +66,7 @@ namespace ECommerceC43.Api
 
         private static int GetBadRequestException(BadRequestException badRequestException, ErrorToReturn? response)
         {
+            response.StatusCode = StatusCodes.Status400BadRequest;
             response.Errors = badRequestException.Errors;
             return StatusCodes.Status400BadRequest;
         }
