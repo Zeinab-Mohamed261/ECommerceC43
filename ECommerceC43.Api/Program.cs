@@ -29,6 +29,7 @@ namespace ECommerceC43.Api
             builder.Services.AddAplicationServices(); // DI for application services
 
             builder.Services.AddWebApplicationServices(); // DI for web application services
+            builder.Services.AddJwtService(builder.Configuration);
             #endregion
 
 
@@ -38,7 +39,7 @@ namespace ECommerceC43.Api
             using var scope = app.Services.CreateScope();
             var objectOfDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
             objectOfDataSeeding.SeedData(); // call seeding data method
-
+            objectOfDataSeeding.IdentityDataSeed(); // call seeding identity data method
 
             // Configure the HTTP request pipeline.
             #region MiddleWare
@@ -61,7 +62,9 @@ namespace ECommerceC43.Api
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
