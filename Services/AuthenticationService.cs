@@ -1,17 +1,22 @@
-﻿using Domain.Exceptions;
+﻿
+using Domain.Exceptions;
 using Domain.Models.IdentityModule;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using ServicesAbstrations;
 using Shared.DataTransferObject.IdentityDtos;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Services
 {
-    public class AuthenticationService(UserManager<ApplicationUser> _userManager) : IAuthenticationService
+    public class AuthenticationService(UserManager<ApplicationUser> _userManager,IConfiguration _configuration/*عشان اوصل ل appsetting*/) : IAuthenticationService
     {
         public async Task<UserDto> LoginAsync(LoginDto loginDto)
         {
@@ -32,7 +37,7 @@ namespace Services
                 {
                     DisplayName = user.DisplayName,
                     Email = user.Email,
-                    Token = CreateTokenAsync(user)
+                    Token =await CreateTokenAsync(user)
                 };
             }
             else
@@ -62,7 +67,7 @@ namespace Services
                 {
                     DisplayName = user.DisplayName,
                     Email = user.Email,
-                    Token = CreateTokenAsync(user)
+                    Token =await CreateTokenAsync(user)
                 };
             }
             else
@@ -77,9 +82,32 @@ namespace Services
 
         }
 
-        private string CreateTokenAsync(ApplicationUser user)
+        private async Task<string> CreateTokenAsync(ApplicationUser user)
         {
-            return "TODO";
+            var Claims = new List<Claim>()
+            {
+                new(ClaimTypes.Email , user.Email!),
+                new(ClaimTypes.Name , user.UserName!),
+                new(ClaimTypes.NameIdentifier , user.Id!)
+            };            
+            var Roles =await _userManager.GetRolesAsync(user);
+            foreach (var role in Roles)
+            {
+                Claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+            var SecretKey = _configuration.GetSection("JWTOptions")["SecretKey"]; //Get from appsettings
+            var Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
+            var credintials = new SigningCredentials(Key , SecurityAlgorithms.HmacSha256);
+
+            var Token = new JwtSecurityToken(
+
+                issuer: _configuration["JWTOptions:Issuer"],
+                audience: _configuration["JWTOptions:Audience"],
+                claims: Claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: credintials);
+
+            return new JwtSecurityTokenHandler().WriteToken(Token);
         }
 
     }
