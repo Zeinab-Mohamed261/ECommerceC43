@@ -38,7 +38,7 @@ namespace ECommerceC43.Api
             using var scope = app.Services.CreateScope();
             var objectOfDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
             objectOfDataSeeding.SeedData(); // call seeding data method
-
+            objectOfDataSeeding.IdentityDataSeed(); // call seeding identity data method
 
             // Configure the HTTP request pipeline.
             #region MiddleWare
