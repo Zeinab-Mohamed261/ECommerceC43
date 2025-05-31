@@ -30,6 +30,7 @@ namespace ECommerceC43.Api
 
             builder.Services.AddWebApplicationServices(); // DI for web application services
             builder.Services.AddJwtService(builder.Configuration);
+            builder.Services.AddAuthorization();
             #endregion
 
 
