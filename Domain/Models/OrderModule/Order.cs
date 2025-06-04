@@ -14,6 +14,7 @@ namespace Domain.Models.OrderModule
         public OrderStatus OrderStatus { get; set; }
         public OrderAddress Address { get; set; } = default!;
         public DeliveryMethod DeliveryMethod { get; set; } = default!;
+        public int DeliveryMethodId { get; set; }  //FK
         public ICollection<OrderItem> Items { get; set; } = [];
         public decimal SubTotal { get; set; }
         //[NotMapped] //not mapped in db
