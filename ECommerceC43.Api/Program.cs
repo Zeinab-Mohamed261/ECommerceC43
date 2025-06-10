@@ -24,6 +24,15 @@ namespace ECommerceC43.Api
             
             #region DI
             builder.Services.AddControllers();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+                });
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddSwaggerServices(); // DI for swagger
 
@@ -80,6 +89,7 @@ namespace ECommerceC43.Api
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors("AllowAll");
 
             app.UseAuthentication();
             app.UseAuthorization();
