@@ -10,7 +10,7 @@ namespace Shared.DataTransferObject.OrderModuleDtos
     public class OrderToReturnDto
     {
         public Guid Id { get; set; }
-        public string UserName { get; set; } = default!;
+        public string UserEmail { get; set; } = default!;
         public DateTimeOffset OrderDate { get; set; }
         public AddressDto Address { get; set; } = default!;
         public string DeliveryMethod { get; set; } = default!;
