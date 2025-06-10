@@ -16,5 +16,14 @@ namespace ServicesAbstrations
 
         Task<OrderToReturnDto> CreateOrder(OrderDto orderDto , string email);
 
+        //Get Delivery Methods
+        Task<IEnumerable<DeliveryMethodsDto>> GetDeliveryMethodAsync();
+
+        //Get All Orders 
+        Task<IEnumerable<OrderToReturnDto>> GetAllOrdersAsync(string email);
+
+        //Get Order By Id
+        Task<OrderToReturnDto> GetOrderByIdAsync(Guid id);
+
     }
 }
