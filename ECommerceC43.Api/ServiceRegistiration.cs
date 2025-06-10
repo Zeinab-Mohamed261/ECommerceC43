@@ -31,6 +31,7 @@ namespace ECommerceC43.Api
                     {
                     new OpenApiSecurityScheme
                     {
+
                         Reference = new OpenApiReference
                         {
                             Id = "Bearer",
