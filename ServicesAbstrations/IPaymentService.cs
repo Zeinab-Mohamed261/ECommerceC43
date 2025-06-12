@@ -10,6 +10,6 @@ namespace ServicesAbstrations
     public interface IPaymentService
     {
         Task<BasketDto> CreateOrUpdatePaymentIntentAsync(string basketId);
-
+        Task UpdateOrderPaymentStatus(string JsonRequest, string StripeHeader);
     }
 }

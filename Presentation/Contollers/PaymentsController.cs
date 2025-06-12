@@ -21,5 +21,18 @@ namespace Presentation.Contollers
             var Basket =await serviceManager.PaymentService.CreateOrUpdatePaymentIntentAsync(BasketId);
             return Ok(Basket);
         }
+        [HttpPost("WebHook")]
+        public async Task<ActionResult> WebHook()
+        {
+            var json =await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+            //Logic
+            await serviceManager.PaymentService.UpdateOrderPaymentStatus(json, Request.Headers["Stripe-Signature"]);
+
+
+            return new EmptyResult();
+        }
+
     }
+
+
 }
