@@ -13,7 +13,7 @@ namespace Presentation.Contollers
 {
     [ApiController]
     [Route("api/[Controller]")] //baseUrl/api/Order
-    public class OrderController(IServiceManager _serviceManager) : ControllerBase
+    public class OrdersController(IServiceManager _serviceManager) : ControllerBase
     {
         //Create Order
         [Authorize]

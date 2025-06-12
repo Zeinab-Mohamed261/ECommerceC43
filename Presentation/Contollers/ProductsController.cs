@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Presentation.Attributes;
 using ServicesAbstrations;
 using Shared;
 using Shared.DataTransferObject.ProductModuleDtos;
@@ -16,6 +17,7 @@ namespace Presentation.Contollers
     {
         // Get All Products
         [HttpGet]
+        [Cache]
         //GET  BaseUrl/api/Products
         public async Task<ActionResult<PaginationResponce<ProductDto>>> GetAllProducts([FromQuery]ProductQueryParameters queryParameters)
         {
